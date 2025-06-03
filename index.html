@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auraier – 소중한 순간을 간직한다</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --primary-bg: #101014; --accent: #C5A47E; }
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--primary-bg);
+      color: #f5f5f7;
+      overflow-x: hidden;
+    }
+    .star-bg {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0; pointer-events: none;
+      background: linear-gradient(120deg, #101014 80%, #23212a 100%);
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.7;
+      animation: twinkle 2.8s infinite alternate;
+      filter: blur(0.5px);
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+    .brand-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      letter-spacing: -0.03em;
+      color: #C5A47E;
+      text-shadow: 0 0 8px rgba(197,164,126,0.5);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #C5A47E;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .cta-btn, .premium-button {
+      background: linear-gradient(135deg, #c9b37c, #b89e5c);
+      color: #101014;
+      padding: 0.9rem 2.2rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 1.13rem;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(201,179,124,0.13);
+      margin: 0.5rem 0.5rem 0 0;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .cta-btn:hover, .premium-button:hover {
+      background: linear-gradient(135deg, #b89e5c, #a07f3f);
+      box-shadow: 0 12px 30px rgba(201,179,124,0.17);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .fade-in, .fade-scale, .brand-logo, header, main {
+      opacity: 0; transform: translateY(30px);
+      transition: all 1.1s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fade-in.active, .fade-scale.active, .brand-logo.active, header.active, main.active {
+      opacity: 1; transform: translateY(0);
+    }
+    .typing-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: transparent;
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 1.1s;
+      pointer-events: auto;
+    }
+    .typing-overlay.hide { opacity: 0; pointer-events: none; }
+    .typing {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.7rem;
+      font-weight: 700;
+      color: #C5A47E;
+      letter-spacing: -0.01em;
+      white-space: pre-line;
+      overflow: hidden;
+      text-align: center;
+      text-shadow: 0 0 24px #C5A47E, 0 0 32px #101014;
+      filter: drop-shadow(0 0 24px #C5A47E88);
+      margin-bottom: 1.5rem;
+      min-width: 250px; max-width: 95vw;
+      line-height: 1.3;
+      background: transparent;
+    }
+    .typing-cursor {
+      display: inline-block;
+      width: .13em;
+      background: #C5A47E;
+      margin-left: 2px;
+      animation: blink 1s steps(1) infinite;
+      height: 1.1em;
+      vertical-align: bottom;
+      box-shadow: 0 0 12px #C5A47E99;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .premium-section {
+      background: linear-gradient(120deg, #18181b 85%, #23212a 100%);
+      border-radius: 2.5rem;
+      box-shadow: 0 8px 40px rgba(197,164,126,0.08);
+      padding: 3.5rem 1.5rem 3.5rem 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .premium-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #c5a47e 60%, #e2d3b3 100%);
+      color: #101014;
+      font-weight: bold;
+      border-radius: 9999px;
+      font-size: 0.98rem;
+      padding: 0.35em 1.1em;
+      margin-bottom: 0.8em;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 10px rgba(197,164,126,0.09);
+      vertical-align: middle;
+    }
+    .product-img {
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+      object-fit: cover;
+      width: 100%;
+      height: 220px;
+      background: #23212a;
+      margin-bottom: 1.5rem;
+      /* Soft overlay for subtle blending */
+      position: relative;
+      z-index: 1;
+    }
+    .premium-desc {
+      font-size: 1.08rem;
+      color: #e2d3b3;
+      margin-bottom: 1.2rem;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: -0.01em;
+    }
+    .price-tag {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #c5a47e;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .price-tag s {
+      color: #888;
+      font-size: 1.1rem;
+      margin-right: 0.3rem;
+    }
+    .step-card, .use-case-card {
+      background: #18181b;
+      border-radius: 1.2rem;
+      padding: 2rem 1.2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+      margin-bottom: 1.5rem;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .step-card b { color: #c5a47e; }
+    .step-card:hover, .use-case-card:hover {
+      transform: translateY(-4px) scale(1.025);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.13);
+      z-index: 2;
+    }
+    .modal-bg {
+      position: fixed;
+      z-index: 200;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(16,16,20,0.75);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s;
+      animation: fadeInModal 0.7s;
+    }
+    @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+    .modal-content {
+      background: #18181b;
+      border-radius: 2rem;
+      padding: 2.5rem 2rem;
+      max-width: 500px;
+      width: 92vw;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.25);
+      position: relative;
+      color: #f5f5f7;
+      text-align: left;
+      font-size: 1.08rem;
+    }
+    .modal-close {
+      position: absolute; right: 1.5rem; top: 1.2rem;
+      font-size: 1.5rem; color: #c5a47e; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #c5a47e;
+      margin-bottom: 1.2rem;
+    }
+    .modal-content ol { margin-left: 1.1rem; margin-bottom: 0.2rem; }
+    .modal-content ol li { margin-bottom: 1.15rem; }
+    .modal-content b { color: #c5a47e; }
+    @media (max-width: 640px) {
+      .brand-logo { font-size: 1.3rem; }
+      .section-title { font-size: 1.2rem; }
+      .typing { font-size: 1.13rem; min-width: 0; }
+      .modal-content { padding: 1.2rem 0.7rem; font-size: 0.98rem; }
+      .premium-section { padding: 1.5rem 0.5rem 1.5rem 0.5rem; border-radius: 1.2rem; }
+      .step-card, .use-case-card { padding: 1.2rem 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="star-bg" id="starBg"></div>
+  <!-- 타이핑 오버레이 -->
+  <div id="typingOverlay" class="typing-overlay">
+    <div id="typing" class="typing"></div>
+  </div>
+
+  <!-- 사용법 모달 -->
+  <div id="howModal" class="modal-bg" style="display:none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="howModalTitle">
+      <button class="modal-close" onclick="closeHowModal()" aria-label="닫기">&times;</button>
+      <h3 id="howModalTitle">나를 위한 나의 편지, 이렇게 만드세요</h3>
+      <ol>
+        <li><b>1. 향과 박스 색상, 사진 선택</b><br>계절별 향기와 컬러 박스를 고르고,<br>최근에 찍은 마음에 드는 사진이 있다면 업로드하세요.<br>(업로드하면 감성적으로 인화해 동봉해드립니다.)</li>
+        <li><b>2. 편지 작성</b><br>미래의 나에게, 혹은 지금의 나에게 전하고 싶은 말을<br>손글씨로 편지지에 남겨보세요.</li>
+        <li><b>3. 문답지 작성</b><br>“지금 가장 좋아하는 음식/노래/장소/기분/소원/미래의 나에게 바라는 점” 등<br>나를 더 잘 알아가고 기록할 수 있는 문답지를 작성합니다.</li>
+        <li><b>4. 봉인</b><br>편지지, 문답지, 미래의 나에게 주고 싶은 작은 선물,<br>(요청 시 사진도 포함)을 박스에 담고, 내가 고른 향의 실링테이프를 붙입니다.</li>
+        <li><b>5. QR로 개봉 날짜 및 보관장소 기록</b><br>QR코드를 찍고, 개봉 날짜와 보관 장소를 기록하세요.</li>
+        <li><b>6. 개봉</b><br>정해둔 날짜에 맞추어 개봉하면,<br>오감으로 감정이 복원되는 특별한 순간을 경험할 수 있습니다.</li>
+      </ol>
+    </div>
+  </div>
+  <!-- 단품 구매 모달 -->
+  <div id="stationeryModal" class="modal-bg" style="display:none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="stationeryModalTitle">
+      <button class="modal-close" onclick="closeStationeryModal()" aria-label="닫기">&times;</button>
+      <h3 id="stationeryModalTitle">Auraier 편지지 단품 구매</h3>
+      <p>고급 음각 로고와 계절 한정 컬러, 개별 포장이 포함된 Auraier 편지지와 봉투를 1장 단위로 구매할 수 있습니다.</p>
+      <div class="mt-4">
+        <button class="cta-btn" onclick="window.location.href='order-paper.html'">편지지 1장 구매 📝</button>
+        <button class="cta-btn" onclick="window.location.href='order-envelope.html'">봉투 1장 구매 ✉️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 헤더 -->
+  <header id="header" class="fixed w-full bg-black/85 backdrop-blur-md z-50 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="brand-logo">Auraier</div>
+      <nav class="hidden md:flex gap-8 text-gray-300">
+        <a href="#" onclick="openHowModal();return false;" class="hover:text-[#C5A47E]">사용법</a>
+        <a href="#premium" class="hover:text-[#C5A47E]">프리미엄 라인</a>
+        <a href="#" onclick="openStationeryModal();return false;" class="hover:text-[#C5A47E]">편지지 단품</a>
+        <a href="#cases" class="hover:text-[#C5A47E]">활용 예시</a>
+        <a href="#reviews" class="hover:text-[#C5A47E]">후기</a>
+        <a href="#faq" class="hover:text-[#C5A47E]">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- 히어로 -->
+    <section class="min-h-screen flex items-center justify-center text-center px-4 pt-24 relative z-10 fade-scale">
+      <div class="max-w-2xl mx-auto">
+        <div class="brand-logo mb-6">Auraier</div>
+        <h1 class="text-3xl md:text-5xl font-bold mb-8 leading-tight" style="text-shadow:0 4px 32px #000,0 0 16px #C5A47E;">
+          소중한 순간을 간직한다. Auraier
+        </h1>
+        <p class="text-lg md:text-xl text-[#C5A47E] mb-10 font-medium">
+          오감으로 기억하는 단 한 번의 타임캡슐
+        </p>
+        <button class="premium-button" onclick="openHowModal()">어떻게 사용하나요? 📖</button>
+        <button class="premium-button" onclick="openStationeryModal()">편지지 단품 구매 📝</button>
+      </div>
+    </section>
+
+    <!-- 프리미엄 라인업 -->
+    <section id="premium" class="fade-scale">
+      <div class="premium-section max-w-5xl mx-auto">
+        <div class="section-title text-center mb-12">Auraier 프리미엄 라인</div>
+        <div class="grid md:grid-cols-2 gap-12">
+          <!-- 나를 위한 세트 -->
+          <div class="flex flex-col items-center">
+            <span class="premium-badge">나만을 위한</span>
+            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="나를 위한 세트" class="product-img" style="object-position: 60% 50%;">
+            <div class="premium-desc">나만의 감정, 기억, 오감을 봉인하는 단 하나의 타임캡슐 세트</div>
+            <ul class="text-gray-300 space-y-2 mb-4 text-base text-left" style="max-width:320px">
+              <li>・ Auraier 편지지 2장, 봉투 1장 (음각/계절 한정 컬러)</li>
+              <li>・ 감정 문답지, 감성 사진 인화(옵션)</li>
+              <li>・ 절취+향기 실링, 실링왁스 스티커</li>
+              <li>・ QR 코드 개봉 알림</li>
+            </ul>
+            <div class="price-tag">
+              <s>29,000원</s> 19,900원
+            </div>
+            <a href="order-me.html" class="premium-button">나만의 타임캡슐 만들기</a>
+          </div>
+          <!-- 선물용 세트 -->
+          <div class="flex flex-col items-center">
+            <span class="premium-badge">소중한 사람을 위한</span>
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="선물용 세트" class="product-img" style="object-position: 50% 60%;">
+            <div class="premium-desc">
+              진심을 전하는 프리미엄 선물 세트.<br>
+              <b>특별한 날, 직접 만나지 않아도</b><br>
+              원하는 날짜를 스티커에 적어 타임캡슐을 미리 전달하면,<br>
+              그 날에 맞춰 편지를 개봉하는 설렘을 선물할 수 있습니다.
+            </div>
+            <ul class="text-gray-300 space-y-2 mb-4 text-base text-left" style="max-width:320px">
+              <li>・ Auraier 편지지 2장, 봉투 1장 (음각/계절 한정 컬러)</li>
+              <li>・ 감정 카드, 축하 메시지 카드</li>
+              <li>・ 절취+향기 실링, 실링왁스 스티커</li>
+              <li>・ 프리미엄 선물포장, QR 알림</li>
+            </ul>
+            <div class="price-tag">
+              <s>32,000원</s> 21,900원
+            </div>
+            <a href="order-gift.html" class="premium-button">선물용 타임캡슐 만들기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 활용 예시 -->
+    <section id="cases" class="py-20 fade-scale">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="section-title text-center">Auraier, 이런 순간에 더 특별합니다</div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="use-case-card">
+            <div class="text-[#C5A47E] text-lg mb-2 font-semibold">연인 기념일 💑</div>
+            <div class="text-gray-300">몇 달 전, 서로를 위한 편지를 써<br>기념일에 함께 개봉하며<br>진짜 마음을 확인하세요.</div>
+          </div>
+          <div class="use-case-card">
+            <div class="text-[#C5A47E] text-lg mb-2 font-semibold">특별한 날짜의 감정 보관 🎂</div>
+            <div class="text-gray-300">오늘의 감정, 소원, 다짐을 남기고<br>미래의 내가 그때의 감정을 다시 꺼내보세요.</div>
+          </div>
+          <div class="use-case-card">
+            <div class="text-[#C5A47E] text-lg mb-2 font-semibold">가족·친구와 추억 봉인 🧳</div>
+            <div class="text-gray-300">함께한 여행, 생일, 소중한 날의 감정을<br>타임캡슐에 담아<br>몇 년 뒤 함께 열어보세요.</div>
+          </div>
+          <div class="use-case-card">
+            <div class="text-[#C5A47E] text-lg mb-2 font-semibold">직접 만나지 못하는 특별한 날 🎈</div>
+            <div class="text-gray-300">
+              바빠서 만나지 못하는 친구에게<br>
+              미리 타임캡슐을 건네주고,<br>
+              스티커에 “생일날 개봉”이라고 적어두세요.<br>
+              그날, 편지를 열기만 해도<br>
+              당신의 진심과 감동이 고스란히 전달됩니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 후기 -->
+    <section id="reviews" class="py-20 bg-[#18181b] fade-scale">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="section-title">진짜 경험, 진짜 이야기</div>
+        <div class="flex flex-col gap-8">
+          <div class="bg-[#222226] rounded-xl p-8 text-left max-w-2xl mx-auto shadow-lg">
+            <div class="text-lg text-[#C5A47E] font-bold mb-2">"생일날, 직접 만나지 못했지만 감동은 그대로 전해졌어요."</div>
+            <div class="text-gray-200 text-base mb-2">
+              바빠서 친구를 만나지 못했는데,<br>
+              며칠 전에 미리 받은 Auraier 타임캡슐.<br>
+              스티커에 적힌 날짜에 맞춰 편지를 열었더니<br>
+              친구의 진심이 시간과 공간을 건너 제게 도착한 것 같았어요.<br>
+              정말 새로운 감동이었습니다.
+            </div>
+            <div class="text-gray-400 text-sm">— 지수, 2025년 생일 선물 세트</div>
+          </div>
+          <div class="bg-[#222226] rounded-xl p-8 text-left max-w-2xl mx-auto shadow-lg">
+            <div class="text-lg text-[#C5A47E] font-bold mb-2">"타임캡슐을 열자마자, 2년 전의 나와 마주한 느낌이었어요."</div>
+            <div class="text-gray-200 text-base mb-2">
+              향기와 함께, 그때의 손글씨와 감정이 한 번에 몰려와 울컥했습니다.<br>
+              Auraier는 단순한 편지지가 아니라, 나를 위한 작은 의식 같아요.
+            </div>
+            <div class="text-gray-400 text-sm">— 은지, 2023년 봄 타임캡슐 세트</div>
+          </div>
+          <div class="bg-[#222226] rounded-xl p-8 text-left max-w-2xl mx-auto shadow-lg">
+            <div class="text-lg text-[#C5A47E] font-bold mb-2">"선물로 받은 친구가 눈물을 흘렸어요."</div>
+            <div class="text-gray-200 text-base mb-2">
+              평소엔 말하지 못했던 진심을 Auraier로 전하니,<br>
+              언박싱 순간 모두가 감동했어요.<br>
+              포장, 향, 문답지까지 세심해서 선물용으로 강력 추천합니다.
+            </div>
+            <div class="text-gray-400 text-sm">— 수진, 2024년 여름 선물 세트</div>
+          </div>
+          <div class="bg-[#222226] rounded-xl p-8 text-left max-w-2xl mx-auto shadow-lg">
+            <div class="text-lg text-[#C5A47E] font-bold mb-2">"부모님께 드렸더니 오래 간직하신대요."</div>
+            <div class="text-gray-200 text-base mb-2">
+              가족끼리 서로의 마음을 기록해서<br>
+              몇 년 뒤 함께 개봉하기로 했어요.<br>
+              Auraier 덕분에 가족의 소중함을 다시 느꼈습니다.
+            </div>
+            <div class="text-gray-400 text-sm">— 민석, 2024년 가족 세트</div>
+          </div>
+        </div>
+        <a href="#" class="inline-block mt-8 text-[#C5A47E] underline">더 많은 이야기 보기 →</a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 px-4 bg-[#101014] fade-scale">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="section-title">자주 묻는 질문</div>
+        <div class="text-left text-gray-300 space-y-6 text-base">
+          <div>
+            <b>Q. 사진 업로드는 어떻게 하나요?</b><br>
+            A. 세트 구매 시 '사진 추가' 옵션을 선택하면 업로드할 수 있습니다. 48시간 내 감성 필터가 적용된 사진을 보내드립니다.
+          </div>
+          <div>
+            <b>Q. 실링 테이프 재사용 가능한가요?</b><br>
+            A. 아니요, 단 한 번의 개봉으로 설렘을 영원히 간직하세요.
+          </div>
+          <div>
+            <b>Q. 환불/교환 정책은?</b><br>
+            A. 미개봉 상품은 7일 이내 100% 환불/교환 가능합니다.
+          </div>
+          <div>
+            <b>Q. 맞춤 이니셜/문구 각인은 제공되나요?</b><br>
+            A. 프리미엄 세트에 한해, 최대 8자까지 각인 옵션을 선택하실 수 있습니다.
+          </div>
+        </div>
+        <div class="mt-8">
+          <a href="#contact" class="premium-button">상담/문의하기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#18181b] border-t border-[#23212a] py-10 text-center mt-16">
+    <div class="brand-logo mb-2">Auraier</div>
+    <div class="space-x-4 mb-2 text-[#C5A47E] font-medium">
+      <a href="#faq">FAQ</a>
+      <a href="#contact">문의</a>
+      <a href="#">Instagram</a>
+      <a href="#">YouTube</a>
+    </div>
+    <div class="text-gray-400 text-sm mb-2">© 2025 Auraier. All rights reserved.</div>
+    <div class="text-gray-300 text-xs">contact@auraier.com</div>
+  </footer>
+
+  <script>
+    // 타이핑 효과 (느리게)
+    const text = "소중한 순간을 간직한다. Auraier";
+    let i = 0;
+    const typingDiv = document.getElementById('typing');
+    let cursor;
+    function typeWriter() {
+      if (!cursor) {
+        cursor = document.createElement('span');
+        cursor.className = 'typing-cursor';
+        typingDiv.appendChild(cursor);
+      }
+      typingDiv.textContent = text.slice(0, i);
+      typingDiv.appendChild(cursor);
+      if (i < text.length) {
+        i++;
+        setTimeout(typeWriter, 110);
+      } else {
+        setTimeout(() => {
+          document.getElementById('typingOverlay').classList.add('hide');
+          document.getElementById('header').classList.add('active');
+          document.getElementById('mainContent').classList.add('active');
+          document.querySelectorAll('.fade-in').forEach(e => e.classList.add('active'));
+          document.querySelectorAll('.fade-scale').forEach(e => e.classList.add('active'));
+          document.querySelectorAll('.brand-logo').forEach(e => e.classList.add('active'));
+        }, 1200);
+      }
+    }
+    window.onload = () => {
+      setTimeout(typeWriter, 700);
+
+      // 별 배경 subtle 랜덤
+      const starBg = document.getElementById('starBg');
+      for(let i=0;i<60;i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random()*1.2+0.6;
+        star.style.width = size+'px';
+        star.style.height = size+'px';
+        star.style.top = Math.random()*100+'%';
+        star.style.left = Math.random()*100+'%';
+        star.style.opacity = (Math.random()*0.4+0.4).toFixed(2);
+        star.style.animationDelay = (Math.random()*3)+'s';
+        starBg.appendChild(star);
+      }
+    };
+
+    // fade-scale animation
+    const fadeScaleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.fade-scale').forEach(el => fadeScaleObserver.observe(el));
+
+    // 모달 함수
+    function openHowModal() {
+      document.getElementById('howModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeHowModal() {
+      document.getElementById('howModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function openStationeryModal() {
+      document.getElementById('stationeryModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeStationeryModal() {
+      document.getElementById('stationeryModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    window.addEventListener('keydown', function(e){
+      if(e.key === "Escape") {
+        closeHowModal();
+        closeStationeryModal();
+      }
+    });
+    document.getElementById('howModal').addEventListener('mousedown', function(e){
+      if(e.target === this) closeHowModal();
+    });
+    document.getElementById('stationeryModal').addEventListener('mousedown', function(e){
+      if(e.target === this) closeStationeryModal();
+    });
+  </script>
+</body>
+</html>
